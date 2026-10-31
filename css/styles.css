@@ -382,75 +382,111 @@ em { font-family: var(--f-display); font-style: italic; font-weight: 400; }
    02 · ACHIEVEMENTS
    ========================================================================== */
 .achievements { padding-top: clamp(8rem, 15vw, 13rem); background: var(--paper); }
+/* Achievements: three art-directed abstract pieces, not three cards */
 .ach-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2.2vw, 2rem);
-  align-items: start; margin-top: clamp(3.5rem, 7vw, 6rem);
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.75rem);
+  margin-top: clamp(3.5rem, 7vw, 6rem);
 }
-.ach-card:nth-child(2) { margin-top: clamp(2rem, 5vw, 4.5rem); }
-.ach-card:nth-child(3) { margin-top: clamp(1rem, 2vw, 1.8rem); }
-.ach-card {
-  --bg: var(--water); --fg: var(--paper);
-  position: relative; display: flex; flex-direction: column; min-height: 31rem; padding: 1.6rem 1.7rem 2rem;
-  background: var(--bg); color: var(--fg); border: 1.5px solid var(--ink);
-  border-radius: 6px 64px 6px 6px; box-shadow: 0 0 0 var(--ink);
-  transition: transform 0.55s var(--ease), box-shadow 0.55s var(--ease);
+.ach {
+  --fg: var(--paper); position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column;
+  padding: clamp(1.4rem, 2.4vw, 2.3rem); color: var(--fg); min-height: clamp(27rem, 39vw, 36rem);
+  transition: box-shadow 0.6s var(--ease), translate 0.6s var(--ease);
 }
-.ach--water { --bg: var(--water); --fg: var(--paper); }
-.ach--eco { --bg: var(--lime); --fg: var(--ink); }
-.ach--science { --bg: var(--ember); --fg: var(--ink); }
-.ach-card:hover, .ach-card:focus-within { transform: translate(-6px, -10px) rotate(-0.6deg); box-shadow: 10px 12px 0 var(--ink); }
-.ach-top { display: flex; align-items: center; gap: 0.9rem; }
+.ach:hover, .ach:focus-within { translate: 0 -6px; box-shadow: 0 30px 50px -28px rgba(14, 27, 20, 0.55); }
+.ach--swim { grid-column: 1 / span 8; grid-row: 1; border-radius: 3px 130px 3px 3px; }
+.ach--science { grid-column: 1 / span 8; grid-row: 2; --fg: var(--ink); border-radius: 3px 3px 130px 3px; }
+.ach--eco { grid-column: 9 / span 4; grid-row: 1 / span 2; border-radius: 999px 999px 3px 3px; padding-top: clamp(4.5rem, 8vw, 7rem); text-align: center; min-height: 0; }
+.ach-art { position: absolute; inset: 0; z-index: -1; }
+.ach-svg { width: 100%; height: 100%; display: block; }
+.ach-top { display: flex; align-items: center; gap: 0.9rem; margin-bottom: auto; padding-bottom: 2rem; }
+.ach--eco .ach-top { justify-content: center; }
 .ach-num { font: 500 0.8rem/1 var(--f-mono); letter-spacing: 0.12em; }
 .ach-kind {
-  font: 500 0.68rem/1 var(--f-mono); letter-spacing: 0.14em; text-transform: uppercase;
-  padding: 0.4rem 0.7rem; border: 1px solid currentColor; border-radius: 999px;
+  padding: 0.38rem 0.75rem; border: 1px solid currentColor; border-radius: 999px;
+  font: 500 0.68rem/1 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase;
 }
-.ach-art { margin: 2rem 0 1.8rem; height: 9.5rem; display: grid; place-items: center; }
-.ach-art svg { height: 100%; width: auto; overflow: hidden; }
-.lens { fill: currentColor; fill-opacity: 0.12; }
-.goggles { animation: bob 3.6s ease-in-out infinite; transform-origin: 100px 60px; }
-.glint { opacity: 0.9; }
-.ach-card:hover .goggles { animation-duration: 1.6s; }
-.drop { fill: currentColor; stroke: none; opacity: 0; animation: dropFall 3.4s ease-in infinite; }
-.drop.d2 { animation-delay: -1.7s; }
-@keyframes dropFall { 0% { transform: translateY(-10px); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(14px); opacity: 0; } }
-.ach-title { font: 560 clamp(1.9rem, 2.6vw, 2.5rem)/1.02 var(--f-display); letter-spacing: -0.025em; }
-.ach-sub {
-  margin-top: 0.9rem; font: 500 0.78rem/1.4 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85;
+.ach-title { font: 560 clamp(2.6rem, 5vw, 4.8rem)/0.94 var(--f-display); letter-spacing: -0.035em; max-width: 12ch; }
+.ach--science .ach-title { max-width: 9ch; }
+.ach-title em { font-weight: 330; letter-spacing: -0.02em; }
+.ach--eco .ach-title { font-size: clamp(2.4rem, 3.8vw, 3.6rem); max-width: none; color: var(--lime); margin-top: auto; }
+.ach-desc { margin-top: 1.1rem; max-width: 29rem; font-size: 1.05rem; line-height: 1.5; }
+.ach--eco .ach-desc { margin-inline: auto; max-width: 20rem; padding-bottom: clamp(0.5rem, 1.5vw, 1.2rem); }
+
+/* entrance: the art unveils as the piece arrives */
+.ach.in .ach-art { animation: artIn 1.5s var(--ease) calc(var(--d, 0s) + 0.1s) backwards; }
+@keyframes artIn { from { clip-path: inset(0 0 100% 0); scale: 1.12; } }
+
+/* pointer parallax layers (fed by --mx / --my from JS) */
+.d1, .d2, .d3 { transition: translate 0.6s var(--ease); }
+.d1 { translate: calc(var(--mx, 0) * -7px) calc(var(--my, 0) * -5px); }
+.d2 { translate: calc(var(--mx, 0) * 14px) calc(var(--my, 0) * 9px); }
+.d3 { translate: calc(var(--mx, 0) * 30px) calc(var(--my, 0) * 20px); }
+
+/* ---- 01 swimming ---- */
+.ach--swim .ach-title em { color: var(--lime); }
+.sw-wave { animation: waveSlide var(--dur, 20s) linear infinite; animation-direction: var(--dir, normal); }
+.sw-wave--lime { stroke: #c9f25a; stroke-width: 2.4; }
+@keyframes waveSlide { to { transform: translateX(calc(var(--wl) * -1px)); } }
+.sw-caustic { transform-origin: 250px 200px; animation: caustic 9s ease-in-out infinite alternate; }
+.sw-caustic--b { transform-origin: 760px 330px; animation-duration: 12s; animation-direction: alternate-reverse; }
+@keyframes caustic { to { scale: 1.25; opacity: 0.55; } }
+.rope { stroke-dasharray: 0 22; animation: ropeFlow 5s linear infinite; }
+.rope--b { animation-duration: 7s; animation-direction: reverse; }
+@keyframes ropeFlow { to { stroke-dashoffset: -88; } }
+.sw-four { font: 700 600px/1 var(--f-display); fill: transparent; stroke: #f4efe4; stroke-width: 3; opacity: 0.8; transition: fill 0.6s, opacity 0.6s; }
+.ach--swim:hover .sw-four { fill: rgba(244, 239, 228, 0.12); opacity: 0.85; }
+.sw-stage { font: 500 24px var(--f-mono); letter-spacing: 0.4em; fill: #f4efe4; opacity: 0.8; }
+.sw-x { animation: swimX 11s linear infinite; }
+.sw-y { transform: translateY(300px); animation: swimY 1.2s ease-in-out infinite alternate; }
+@keyframes swimX { from { transform: translateX(-60px); } to { transform: translateX(1080px); } }
+@keyframes swimY { from { transform: translateY(262px); } to { transform: translateY(322px); } }
+.sw-dot { fill: #c9f25a; }
+.sw-ring { fill: none; stroke: #c9f25a; stroke-width: 2; transform-box: fill-box; transform-origin: center; animation: ringOut 2.4s ease-out infinite; }
+.sw-ring--b { animation-delay: 0.8s; } .sw-ring--c { animation-delay: 1.6s; }
+@keyframes ringOut { from { scale: 1; opacity: 0.9; } to { scale: 6; opacity: 0; } }
+
+/* ---- 02 eco warrior ---- */
+.ring { transform-origin: 300px 360px; animation: breathe 7s ease-in-out infinite alternate; animation-delay: calc(var(--k) * -0.45s); }
+@keyframes breathe { from { scale: 1; rotate: 0deg; } to { scale: 1.035; rotate: 1.6deg; } }
+.eco-rings { transition: scale 1.2s var(--ease); transform-origin: 300px 360px; }
+.ach--eco:hover .eco-rings { scale: 1.07; }
+.eco-leaf { animation: leafTurn 8s ease-in-out infinite alternate; }
+@keyframes leafTurn { from { rotate: -10deg; } to { rotate: 14deg; } }
+.seed { animation: seedUp var(--t, 10s) linear infinite; animation-delay: var(--d, 0s); }
+@keyframes seedUp { from { transform: translateY(0); opacity: 0; } 15% { opacity: 0.9; } to { transform: translateY(-420px); opacity: 0; } }
+.stem { animation: sway 5s ease-in-out infinite alternate; animation-delay: var(--d, 0s); transition: scale 0.9s var(--ease); }
+@keyframes sway { from { rotate: calc(var(--s, 3deg) * -1); } to { rotate: var(--s, 3deg); } }
+.ach--eco:hover .stem { scale: 1 1.12; }
+
+/* ---- 03 science ---- */
+.sci-spin { animation: spin 120s linear infinite; transition: scale 1s var(--ease); }
+.ach--science:hover .sci-spin { scale: 1.06; }
+.bub { animation: bubRise var(--t, 7s) ease-in infinite; animation-delay: var(--d, 0s); }
+@keyframes bubRise { from { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } to { transform: translateY(-260px); opacity: 0; } }
+.sci-lime { transition: fill 0.6s; }
+.ach--science:hover .sci-lime { fill: #f4efe4; }
+
+@media (max-width: 1000px) {
+  .ach--swim, .ach--science, .ach--eco { grid-column: 1 / -1; grid-row: auto; }
+  .ach--swim { border-radius: 3px 90px 3px 3px; } .ach--science { border-radius: 3px 3px 90px 3px; }
+  .ach--eco { min-height: 36rem; border-radius: 999px 999px 3px 3px; }
+  .ach-title { max-width: none; }
 }
-.ach-desc { margin-top: auto; padding-top: 1.6rem; font-size: 1.05rem; line-height: 1.55; }
-
-/* card art motion (runs gently once revealed, livelier on hover) */
-.wave { animation: waveSlide 5s linear infinite paused; }
-.wave.w2 { animation-duration: 6.5s; animation-direction: reverse; }
-.wave.w3 { animation-duration: 8s; }
-.ach-card.in .wave { animation-play-state: running; }
-.ach-card:hover .wave { animation-duration: 2.4s; }
-.ach-card:hover .wave.w2 { animation-duration: 3.2s; }
-.ach-card:hover .wave.w3 { animation-duration: 4s; }
-@keyframes waveSlide { to { transform: translateX(-60px); } }
-.swimmer { animation: bob 3.2s ease-in-out infinite; }
-@keyframes bob { 50% { transform: translateY(-4px) rotate(-1.5deg); } }
-.splash { opacity: 0; transition: opacity 0.3s; }
-.ach-card:hover .splash { opacity: 1; }
-
-.sprout { transform-origin: 100px 112px; animation: sway 5s ease-in-out infinite alternate; transition: scale 0.6s var(--ease); }
-.ach-card:hover .sprout { scale: 1.1; }
-@keyframes sway { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
-.leaf-l { transform-origin: 100px 80px; animation: flapL 3.6s ease-in-out infinite alternate; }
-.leaf-r { transform-origin: 100px 66px; animation: flapR 4.2s ease-in-out infinite alternate; }
-@keyframes flapL { to { transform: rotate(-7deg); } }
-@keyframes flapR { to { transform: rotate(8deg); } }
-.globe, .globe-arc { opacity: 0.55; }
-
-.bub { opacity: 0; animation: bubUp 3.4s ease-in infinite; }
-.b2 { animation-delay: -1.1s; }
-.b3 { animation-delay: -2.2s; }
-.ach-card:hover .bub { animation-duration: 1.8s; }
-@keyframes bubUp { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-46px); opacity: 0; } }
-.spark { transform-box: fill-box; transform-origin: center; animation: twinkle 2.6s ease-in-out infinite; }
-.spark.s2 { animation-delay: -1.3s; }
-@keyframes twinkle { 50% { transform: scale(0.4) rotate(45deg); opacity: 0.4; } }
+@media (max-width: 680px) {
+  /* on phones the art fades out behind the text so the copy stays legible */
+  .ach--science { background: #ff7a45; }
+  .ach--science .ach-art { -webkit-mask-image: linear-gradient(#000 34%, transparent 60%); mask-image: linear-gradient(#000 34%, transparent 60%); }
+  .ach { min-height: 25rem; }
+  .ach--science { min-height: 30rem; }
+  .ach--eco { min-height: 34rem; padding-top: 6rem; }
+  .ach-title { font-size: clamp(2.4rem, 12vw, 3.4rem); }
+}
+@media (hover: none) { .ach:hover { translate: none; box-shadow: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .sw-x, .sw-y, .sw-ring, .seed, .bub { animation: none; }
+  .sw-y { transform: translateY(300px); } .sw-x { transform: translateX(380px); }
+  .ach.in .ach-art { animation: none; }
+}
 
 /* ==========================================================================
    03 · PROJECTS
@@ -641,22 +677,6 @@ em { font-family: var(--f-display); font-style: italic; font-weight: 400; }
 /* ==========================================================================
    Responsive
    ========================================================================== */
-@media (max-width: 1080px) {
-  .ach-grid { grid-template-columns: 1fr 1fr; }
-  .ach-card:nth-child(2) { margin-top: 3rem; }
-  .ach-card:nth-child(3) {
-    grid-column: 1 / -1; margin-top: 0; min-height: 0;
-    display: grid; grid-template-columns: minmax(10rem, 0.8fr) 1.2fr; column-gap: 2rem; grid-template-rows: auto auto auto 1fr;
-  }
-  .ach-card:nth-child(3) .ach-top { grid-column: 1 / -1; }
-  .ach-card:nth-child(3) .ach-art { grid-row: 2 / 5; grid-column: 1; margin: 1rem 0 0; height: 11rem; }
-  .ach-card:nth-child(3) .ach-title,
-  .ach-card:nth-child(3) .ach-sub,
-  .ach-card:nth-child(3) .ach-desc { grid-column: 2; }
-  .ach-card:nth-child(3) .ach-title { margin-top: 1rem; }
-  .ach-card { min-height: 28rem; }
-}
-
 @media (max-width: 900px) {
   :root { --header-h: 68px; }
   .menu-toggle { display: block; }
@@ -706,12 +726,6 @@ em { font-family: var(--f-display); font-style: italic; font-weight: 400; }
 }
 
 @media (max-width: 680px) {
-  .ach-grid { grid-template-columns: 1fr; }
-  .ach-card, .ach-card:nth-child(2), .ach-card:nth-child(3) { margin-top: 0; min-height: 0; }
-  .ach-card:nth-child(3) { display: flex; }
-  .ach-card:nth-child(3) .ach-art { margin: 2rem 0 1.8rem; height: 9.5rem; }
-  .ach-card:nth-child(3) .ach-title { margin-top: 0; }
-  .ach-desc { margin-top: 0; }
   .elements { grid-template-columns: repeat(2, 1fr); }
   .email-btn { flex-wrap: wrap; justify-content: center; border-radius: 28px; padding: 1.1rem 1.4rem; text-align: center; }
   .email-label { display: none; }
@@ -726,7 +740,7 @@ em { font-family: var(--f-display); font-style: italic; font-weight: 400; }
 }
 
 @media (hover: none) {
-  .ach-card:hover, .el:hover { transform: none; box-shadow: none; }
+  .el:hover { transform: none; box-shadow: none; }
 }
 
 /* ---------- Reduced motion ---------- */
@@ -868,7 +882,6 @@ html { scrollbar-width: thin; scrollbar-color: #5d6e62 transparent; }
 .seal-disc { fill: var(--ink); }
 .seal text { font: 500 9.4px var(--f-mono); letter-spacing: 0.12em; fill: var(--lime); }
 .seal-star { fill: var(--lime); }
-.ach-card:hover .seal { animation-duration: 6s; }
 
 /* ---------- Project media ---------- */
 .proj.in .frame { animation: unveil 1.4s var(--ease) calc(var(--d, 0s) + 0.1s) backwards; }

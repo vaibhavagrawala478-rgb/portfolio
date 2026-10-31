@@ -426,6 +426,20 @@
       el.addEventListener('pointerleave', () => { el.style.transform = ''; });
     });
 
+    // achievements: the artwork layers drift with the pointer
+    $$('.ach').forEach((card) => {
+      card.addEventListener('pointermove', (e) => {
+        if (prefersReduced()) return;
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (((e.clientX - r.left) / r.width - 0.5) * 2).toFixed(3));
+        card.style.setProperty('--my', (((e.clientY - r.top) / r.height - 0.5) * 2).toFixed(3));
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.setProperty('--mx', '0');
+        card.style.setProperty('--my', '0');
+      });
+    });
+
     $$('.proj').forEach((card) => {
       const frameEl = $('.frame', card);
       card.addEventListener('pointermove', (e) => {
