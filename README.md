@@ -31,6 +31,9 @@ then open <http://localhost:5173>. (Opening `index.html` directly also works.)
 - **Scratch** — username, status and the join date live in `#scratch`. The "Joined … ago" text is calculated in `main.js` from `data-joined` on `#scratch-joined`.
 - **Toolkit** — each tool is a `<span class="tool tw-…">`; the `tw-*` class picks its type style. Official logos are intentionally not used — they're wordmarks.
 
+- **Languages** — the `#languages` section. The Hindi text uses `assets/fonts/tiro-devanagari-subset.woff`, a subset of Tiro Devanagari Hindi (OFL) that only contains the glyphs currently on the page. If you add new Devanagari text, re-subset the font (e.g. with `pyftsubset`) so the new letters are included.
+- **Toolkit** — four groups (`AI & Research`, `Development & Coding`, `Design & Creation`, `Technology & Infrastructure`). Logos come from Simple Icons and are only used where the brand mark exists; they stay the property of their owners and don't imply any partnership.
+
 ## Notes
 
 - Zombie Killer has no public preview, so its panel is typography and abstract graphics rather than a screenshot. Its GitHub repository must be public for the link to work for visitors.

@@ -427,7 +427,7 @@
     });
 
     // achievements: the artwork layers drift with the pointer
-    $$('.ach').forEach((card) => {
+    $$('.ach, .lang').forEach((card) => {
       card.addEventListener('pointermove', (e) => {
         if (prefersReduced()) return;
         const r = card.getBoundingClientRect();
@@ -507,24 +507,15 @@
       const path = ecoPaths[g.dataset.group];
       if (!path) continue;
       const lab = $('.eco-label', g).getBoundingClientRect();
-      let d;
-      if (g.dataset.group === 'make') {
-        const ex = lab.right - er.left;
-        const ey = lab.bottom - er.top;
-        d = `M${f(cx - r)} ${f(cy)} C${f(cx - r - 70)} ${f(cy)} ${f(ex + 70)} ${f(ey)} ${f(ex)} ${f(ey)}`;
-      } else if (g.dataset.group === 'ai') {
-        const ex = lab.right - er.left - 48;
-        const ey = lab.top - er.top - 6;
-        const sy = cy + r;
-        d = `M${f(cx)} ${f(sy)} C${f(cx)} ${f(sy + (ey - sy) * 0.55)} ${f(ex)} ${f(ey - (ey - sy) * 0.55)} ${f(ex)} ${f(ey)}`;
-      } else {
-        const ex = lab.right - er.left - 6;
-        const ey = lab.top - er.top - 6;
-        const sx = cx - r * 0.72;
-        const sy = cy + r * 0.72;
-        d = `M${f(sx)} ${f(sy)} C${f(sx - 60)} ${f(sy + 110)} ${f(ex + 16)} ${f(ey - 110)} ${f(ex)} ${f(ey)}`;
-      }
-      path.setAttribute('d', d);
+      // groups left of the hub link to their inner (right) end, groups to the right to their left end
+      const onLeft = lab.left + lab.width / 2 < cr.left + cr.width / 2;
+      const ex = (onLeft ? lab.right : lab.left) - er.left;
+      const ey = lab.bottom - er.top;
+      const ang = Math.atan2(ey - cy, ex - cx);
+      const sx = cx + Math.cos(ang) * r;
+      const sy = cy + Math.sin(ang) * r;
+      const dx = ex - sx;
+      path.setAttribute('d', `M${f(sx)} ${f(sy)} C${f(sx + dx * 0.5)} ${f(sy)} ${f(ex - dx * 0.5)} ${f(ey)} ${f(ex)} ${f(ey)}`);
     }
 
     if (tetherTool) {
