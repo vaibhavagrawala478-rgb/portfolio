@@ -726,6 +726,12 @@
     const tabs = $$('[role="tab"]', arcade);
     const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')));
 
+    const curEl = $('#arcade-cur');
+    const totalEl = $('#arcade-total');
+    if (totalEl) totalEl.textContent = String(tabs.length).padStart(2, '0');
+    const current = () => tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+    $$('.ctrl-btn', arcade).forEach((b) => b.addEventListener('click', () => select((current() + Number(b.dataset.dir) + tabs.length) % tabs.length)));
+
     const select = (i, { focus = false } = {}) => {
       tabs.forEach((t, j) => {
         const on = i === j;
@@ -742,6 +748,7 @@
         nav.scrollTo({ left, behavior: prefersReduced() ? 'auto' : 'smooth' });
       }
       if (focus) tabs[i].focus({ preventScroll: true });
+      if (curEl) curEl.textContent = String(i + 1).padStart(2, '0');
     };
 
     tabs.forEach((t, i) => t.addEventListener('click', () => select(i)));
