@@ -835,6 +835,74 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * Guitar: pluck the strings (visual always; sound only if switched on)
+   * ------------------------------------------------------------------ */
+  const gtr = $('.gtr');
+  if (gtr) {
+    const strs = $$('.gs', gtr);
+    const FREQ = [82.41, 110, 146.83, 196, 246.94, 329.63]; // E A D G B E, standard tuning
+    const soundBtn = $('.skill-sound');
+    let audio = null;
+    let soundOn = false;
+
+    const tone = (f) => {
+      if (!audio) return;
+      const t = audio.currentTime;
+      const out = audio.createGain();
+      const lp = audio.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(3200, t);
+      lp.frequency.exponentialRampToValueAtTime(500, t + 1.4);
+      out.gain.setValueAtTime(0.0001, t);
+      out.gain.exponentialRampToValueAtTime(0.2, t + 0.012);
+      out.gain.exponentialRampToValueAtTime(0.0001, t + 1.8);
+      [[f, 'triangle', 1], [f * 2, 'sine', 0.35], [f * 3, 'sine', 0.12]].forEach(([fr, type, amp]) => {
+        const o = audio.createOscillator();
+        const g = audio.createGain();
+        o.type = type;
+        o.frequency.value = fr;
+        g.gain.value = amp;
+        o.connect(g);
+        g.connect(lp);
+        o.start(t);
+        o.stop(t + 1.9);
+      });
+      lp.connect(out);
+      out.connect(audio.destination);
+    };
+
+    const pluck = (i) => {
+      const s = strs[i];
+      const now = performance.now();
+      if (now - (s._t || 0) < 220) return;
+      s._t = now;
+      const anim = $('animate', s);
+      if (anim && !prefersReduced() && typeof anim.beginElement === 'function') anim.beginElement();
+      if (soundOn) tone(FREQ[i]);
+    };
+
+    strs.forEach((s, i) => {
+      s.addEventListener('pointerenter', () => pluck(i));
+      s.addEventListener('pointerdown', () => pluck(i));
+      s.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pluck(i); }
+      });
+    });
+
+    soundBtn.addEventListener('click', () => {
+      soundOn = !soundOn;
+      soundBtn.setAttribute('aria-pressed', String(soundOn));
+      $('.ss-label', soundBtn).textContent = soundOn ? 'Sound on' : 'Sound off';
+      if (soundOn) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) { audio = audio || new Ctx(); audio.resume(); }
+        else { soundOn = false; soundBtn.setAttribute('aria-pressed', 'false'); $('.ss-label', soundBtn).textContent = 'No audio'; return; }
+        tone(FREQ[5]); // a confirming high E
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------------ *
    * Copy email
    * ------------------------------------------------------------------ */
   const copyBtn = $('.copy-btn');
