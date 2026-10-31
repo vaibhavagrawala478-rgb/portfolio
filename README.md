@@ -29,10 +29,8 @@ then open <http://localhost:5173>. (Opening `index.html` directly also works.)
 - **Projects** — the `#projects` section. Add a normal `<a href target="_blank" rel="noopener">`; only link things that are public.
 - **Games** — the `#games` section is a tab list (`.arcade-tab`) plus one `.game` panel per tab. To add a game, add a tab and a panel and give the panel a colour with `.game--yourkey { --g: … }`. Cover art for the Spawn games comes from each game's own Spawn page image.
 - **Scratch** — username, status and the join date live in `#scratch`. The "Joined … ago" text is calculated in `main.js` from `data-joined` on `#scratch-joined`.
-- **Toolkit** — each tool is a `<span class="tool tw-…">`; the `tw-*` class picks its type style. Official logos are intentionally not used — they're wordmarks.
-
 - **Languages** — the `#languages` section. The Hindi text uses `assets/fonts/tiro-devanagari-subset.woff`, a subset of Tiro Devanagari Hindi (OFL) that only contains the glyphs currently on the page. If you add new Devanagari text, re-subset the font (e.g. with `pyftsubset`) so the new letters are included.
-- **Toolkit** — four groups (`AI & Research`, `Development & Coding`, `Design & Creation`, `Technology & Infrastructure`). Logos come from Simple Icons and are only used where the brand mark exists; they stay the property of their owners and don't imply any partnership.
+- **Toolkit** — four groups (`AI & Research`, `Development & Coding`, `Design & Creation`, `Technology & Infrastructure`); each tool is a `<span class="tool tw-…">` and the `tw-*` class picks its type style. Logos come from Simple Icons and are only used where the brand mark exists; they stay the property of their owners and don't imply any partnership.
 
 ## Notes
 
