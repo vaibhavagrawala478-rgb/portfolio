@@ -942,12 +942,15 @@ html { scrollbar-width: thin; scrollbar-color: #5d6e62 transparent; }
 
 .arcade {
   --accent: #ff8a3d; transition: --accent 0.8s ease;
-  position: relative; display: grid; grid-template-columns: minmax(15rem, 0.62fr) minmax(0, 1.8fr);
+  position: relative; display: grid; grid-template-columns: minmax(16rem, 0.7fr) minmax(0, 1.75fr);
   gap: clamp(2rem, 5vw, 5rem); margin-top: clamp(3rem, 6vw, 5rem); align-items: start;
 }
 .arcade[data-active="horror"] { --accent: #cfd9e6; }
 .arcade[data-active="clowns"] { --accent: #ffd23f; }
 .arcade[data-active="zombie"] { --accent: #a6ff3c; }
+.arcade[data-active="kingville"] { --accent: #ff5a47; }
+.arcade[data-active="kestrel"] { --accent: #5af2c4; }
+.arcade[data-active="kingsville"] { --accent: #9db8ff; }
 .arcade::before { /* a glow that takes on the colour of the selected game */
   content: ''; position: absolute; right: -12%; top: -14%; width: 74%; aspect-ratio: 1; z-index: -1; pointer-events: none;
   background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent);
@@ -957,7 +960,7 @@ html { scrollbar-width: thin; scrollbar-color: #5d6e62 transparent; }
 .arcade-tab {
   position: relative; display: grid; grid-template-columns: 2.7rem 1fr; grid-template-areas: "n t" ". p"; align-items: baseline;
   text-align: left; background: none; border: 0; border-bottom: 1px solid rgba(244, 239, 228, 0.2);
-  padding: 1.15rem 2rem 1.25rem 0; color: rgba(244, 239, 228, 0.46);
+  padding: 0.85rem 2rem 0.95rem 0; color: rgba(244, 239, 228, 0.46);
   transition: color 0.4s, padding 0.55s var(--ease);
 }
 .arcade-tab::before { /* progress line */
@@ -965,12 +968,12 @@ html { scrollbar-width: thin; scrollbar-color: #5d6e62 transparent; }
   transform: scaleX(0); transform-origin: left; transition: transform 0.7s var(--ease);
 }
 .arcade-tab::after {
-  content: '→'; position: absolute; right: 0.2rem; top: 1.25rem; font: 500 1.2rem/1 var(--f-mono); color: var(--accent);
+  content: '→'; position: absolute; right: 0.2rem; top: 1rem; font: 500 1.2rem/1 var(--f-mono); color: var(--accent);
   opacity: 0; translate: -10px 0; transition: opacity 0.4s, translate 0.55s var(--ease);
 }
 .tab-num { grid-area: n; font: 500 0.74rem/1 var(--f-mono); letter-spacing: 0.12em; }
-.tab-title { grid-area: t; font: 560 clamp(1.9rem, 3.1vw, 3rem)/1.02 var(--f-display); letter-spacing: -0.03em; }
-.tab-plat { grid-area: p; margin-top: 0.55rem; font: 400 0.7rem/1 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
+.tab-title { grid-area: t; font: 560 clamp(1.55rem, 2.3vw, 2.3rem)/1.04 var(--f-display); letter-spacing: -0.03em; }
+.tab-plat { grid-area: p; margin-top: 0.4rem; font: 400 0.7rem/1 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
 .arcade-tab:hover { color: var(--paper); padding-left: 0.7rem; }
 .arcade-tab[aria-selected="true"] { color: var(--paper); padding-left: 1.1rem; }
 .arcade-tab[aria-selected="true"]::before { transform: scaleX(1); }
@@ -983,6 +986,9 @@ html { scrollbar-width: thin; scrollbar-color: #5d6e62 transparent; }
 .game--horror { --g: #d5dde6; }
 .game--clowns { --g: #ffd23f; }
 .game--zombie { --g: #a6ff3c; }
+.game--kingville { --g: #ff5a47; }
+.game--kestrel { --g: #5af2c4; }
+.game--kingsville { --g: #ffc86b; }
 .js .game { visibility: hidden; pointer-events: none; transition: visibility 0s 0.95s; }
 .js .game.is-active { visibility: visible; pointer-events: auto; transition-delay: 0s; }
 
@@ -1006,7 +1012,7 @@ html { scrollbar-width: thin; scrollbar-color: #5d6e62 transparent; }
   position: absolute; right: 1.6rem; bottom: 1rem; z-index: 2; font: 700 clamp(3.4rem, 8vw, 7rem)/0.8 var(--f-display); letter-spacing: -0.05em;
   color: transparent; -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.6); pointer-events: none;
 }
-.game--horror .game-art::before { /* scanlines */
+.game--horror .game-art::before, .game--kestrel .game-art::before { /* scanlines */
   content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0.35;
   background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0 1px, transparent 1px 3px);
 }
@@ -1032,6 +1038,15 @@ html { scrollbar-width: thin; scrollbar-color: #5d6e62 transparent; }
 @keyframes glitch { 25% { translate: -3px 1px; } 50% { translate: 3px -1px; } 75% { translate: -2px 0; } }
 .game--clowns .game-title { font: italic 700 clamp(2.6rem, 5vw, 4.8rem)/0.92 var(--f-display); color: #ffd23f; -webkit-text-stroke: 1.5px #b3261e; paint-order: stroke fill; text-shadow: 4px 4px 0 #b3261e; }
 .game--zombie .game-title { font: 700 clamp(2.1rem, 4.1vw, 3.9rem)/0.95 var(--f-body); text-transform: uppercase; letter-spacing: 0.04em; color: #a6ff3c; }
+
+.game--kingville .game-title { font: 700 clamp(2.3rem, 4.4vw, 4.2rem)/0.96 var(--f-display); letter-spacing: -0.01em; color: #ffe3d6; text-shadow: 0 0 22px rgba(255, 90, 71, 0.55), 0 3px 0 #7a1410; }
+.game--kestrel .game-title { font: 500 clamp(2.4rem, 4.8vw, 4.6rem)/0.95 var(--f-mono); text-transform: uppercase; letter-spacing: 0.14em; color: #ff9a6a; text-shadow: 0 0 26px rgba(255, 120, 70, 0.4); }
+.game--kingsville .game-title { font: 520 clamp(2.5rem, 4.8vw, 4.6rem)/0.96 var(--f-display); letter-spacing: -0.02em; color: #ffd38a; }
+.game--kingsville .game-title::after { content: ''; display: block; width: 5.5rem; height: 6px; margin-top: 0.8rem; border-top: 1px solid currentColor; border-bottom: 1px solid currentColor; }
+.game--kingville .game-art::before { /* blood-moon vignette */
+  content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(120, 10, 10, 0.5));
+}
 
 /* staggered text for the selected game */
 .js .game .game-head > *, .js .game .game-copy > * {

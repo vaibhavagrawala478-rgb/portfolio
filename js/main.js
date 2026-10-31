@@ -735,7 +735,13 @@
         panels[j].inert = !on;
       });
       arcade.dataset.active = tabs[i].dataset.game;
-      if (focus) tabs[i].focus();
+      // on small screens the tabs scroll sideways: keep the chosen one in view
+      const nav = tabs[i].parentElement;
+      if (nav.scrollWidth > nav.clientWidth + 1) {
+        const left = nav.scrollLeft + tabs[i].getBoundingClientRect().left - nav.getBoundingClientRect().left - 16;
+        nav.scrollTo({ left, behavior: prefersReduced() ? 'auto' : 'smooth' });
+      }
+      if (focus) tabs[i].focus({ preventScroll: true });
     };
 
     tabs.forEach((t, i) => t.addEventListener('click', () => select(i)));
