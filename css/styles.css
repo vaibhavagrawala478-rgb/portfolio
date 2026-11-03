@@ -977,6 +977,7 @@ html { scrollbar-width: thin; scrollbar-color: #5d6e62 transparent; }
 .arcade[data-active="kestrel"] { --accent: #5af2c4; }
 .arcade[data-active="kingsville"] { --accent: #9db8ff; }
 .arcade[data-active="lastlight"] { --accent: #6fc4ff; }
+.arcade[data-active="doodle"] { --accent: #ffcf3f; }
 .arcade::before { /* a glow that takes on the colour of the selected game */
   content: ''; position: absolute; right: -12%; top: -14%; width: 74%; aspect-ratio: 1; z-index: -1; pointer-events: none;
   background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent);
@@ -1016,6 +1017,7 @@ html { scrollbar-width: thin; scrollbar-color: #5d6e62 transparent; }
 .game--kestrel { --g: #5af2c4; }
 .game--kingsville { --g: #ffc86b; }
 .game--lastlight { --g: #6fc4ff; }
+.game--doodle { --g: #ffcf3f; }
 .js .game { visibility: hidden; pointer-events: none; transition: visibility 0s 0.95s; }
 .js .game.is-active { visibility: visible; pointer-events: auto; transition-delay: 0s; }
 
@@ -1080,6 +1082,19 @@ html { scrollbar-width: thin; scrollbar-color: #5d6e62 transparent; }
   content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
   background: linear-gradient(to bottom, rgba(111, 196, 255, 0.16), transparent 38%);
 }
+
+/* the Doodle is Google's artwork, so this card uses original typography + pixel blocks instead of its imagery */
+.game-art--dd { display: flex; align-items: center; background: radial-gradient(60% 90% at 70% 40%, #2a2410, #0d0c08 72%); }
+.dd-px { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pxb { opacity: 0.9; transform-box: fill-box; transform-origin: center; animation: pxbFall 9s linear infinite; }
+.pb1 { fill: #ffcf3f; } .pb2 { fill: #ff6b5a; animation-delay: -2.5s; } .pb3 { fill: #5ab0ff; animation-delay: -5s; } .pb4 { fill: #5ae08a; animation-delay: -1.2s; } .pb5 { fill: #f4efe4; animation-delay: -6.5s; }
+@keyframes pxbFall { from { transform: translateY(-90px); } to { transform: translateY(380px); } }
+.dd-type {
+  position: relative; z-index: 2; margin: 0 0 0 clamp(1.4rem, 4vw, 3.4rem); display: flex; flex-direction: column;
+  font: 500 clamp(2rem, 5vw, 4.6rem)/0.95 var(--f-mono); text-transform: uppercase; letter-spacing: 0.02em; color: #fff3c9;
+}
+.dd-type span:nth-child(2) { color: #ffcf3f; }
+.game--doodle .game-title { font: 600 clamp(2.2rem, 4.2vw, 4rem)/0.98 var(--f-display); letter-spacing: -0.02em; color: #fff3c9; text-wrap: balance; }
 
 /* staggered text for the selected game */
 .js .game .game-head > *, .js .game .game-copy > * {
