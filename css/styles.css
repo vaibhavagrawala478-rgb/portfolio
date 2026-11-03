@@ -951,9 +951,6 @@ html { scrollbar-width: thin; scrollbar-color: #5d6e62 transparent; }
 
 /* ---------- Projects: a single live project, shown large ---------- */
 .gallery { margin-top: clamp(3.5rem, 7vw, 6rem); }
-.proj + .proj { margin-top: clamp(4rem, 8vw, 7.5rem); }
-.frame-view--tall { aspect-ratio: 3 / 2; }
-.proj--weather .frame-view img, .proj--weather:hover .frame-view img { transform: none; translate: none; } /* show the whole collage, no crop */
 .proj { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); column-gap: clamp(2rem, 5vw, 5rem); align-items: center; }
 .proj-media { position: relative; min-width: 0; }
 .proj-media .seal { top: -42px; right: auto; left: -30px; }
