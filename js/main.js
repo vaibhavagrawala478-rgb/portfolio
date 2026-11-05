@@ -894,6 +894,82 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * AI models — orbital showcase: the readout follows hover / focus / tap
+   * ------------------------------------------------------------------ */
+  const mindSys = $('.mind-sys');
+  if (mindSys) {
+    const stage = mindSys.closest('.minds-stage');
+    const nodes = $$('.mind-node', mindSys);
+    const read = $('.mind-read', stage);
+    const rIdx = $('#mr-idx');
+    const rName = $('#mr-name');
+    const rLine = $('#mr-line');
+    const rDots = $$('.mr-dots li', read);
+    const idle = { idx: '—', name: 'Nine minds.', line: 'Hover, focus or tap a model in orbit.' };
+    let pinned = -1;
+
+    const swap = (el, text) => {
+      if (el.textContent === text) return;
+      el.textContent = text;
+      el.classList.remove('swap');
+      void el.offsetWidth;
+      el.classList.add('swap');
+    };
+    const show = (i) => {
+      const n = nodes[i];
+      const c = getComputedStyle(n).getPropertyValue('--c').trim();
+      nodes.forEach((m, k) => m.classList.toggle('is-active', k === i));
+      mindSys.dataset.active = String(i + 1);
+      mindSys.style.setProperty('--cc', c);
+      read.style.setProperty('--c', c);
+      read.removeAttribute('data-idle');
+      rIdx.textContent = String(i + 1).padStart(2, '0');
+      swap(rName, $('.m-name', n).textContent);
+      swap(rLine, 'A model I’ve used or explored.');
+      rDots.forEach((d, k) => d.classList.toggle('is-on', k === i));
+    };
+    const clear = () => {
+      nodes.forEach((m) => m.classList.remove('is-active'));
+      delete mindSys.dataset.active;
+      mindSys.style.removeProperty('--cc');
+      read.style.removeProperty('--c');
+      read.setAttribute('data-idle', '');
+      rIdx.textContent = idle.idx;
+      swap(rName, idle.name);
+      swap(rLine, idle.line);
+      rDots.forEach((d) => d.classList.remove('is-on'));
+    };
+    const settle = () => (pinned >= 0 ? show(pinned) : clear());
+
+    nodes.forEach((n, i) => {
+      n.addEventListener('pointerenter', () => show(i));
+      n.addEventListener('focus', () => show(i));
+      n.addEventListener('pointerleave', settle);
+      n.addEventListener('blur', settle);
+      n.addEventListener('click', () => {
+        pinned = pinned === i ? -1 : i;
+        nodes.forEach((m, k) => m.setAttribute('aria-pressed', String(k === pinned)));
+        settle();
+        if (pinned < 0) show(i);
+      });
+    });
+
+    // a small 3D tilt that follows the pointer (fine pointers, no reduced motion)
+    stage.addEventListener('pointermove', (e) => {
+      if (!finePointer.matches || prefersReduced()) return;
+      const r = mindSys.getBoundingClientRect();
+      const x = clamp((e.clientX - (r.left + r.width / 2)) / (r.width / 2), -1, 1);
+      const y = clamp((e.clientY - (r.top + r.height / 2)) / (r.height / 2), -1, 1);
+      mindSys.style.setProperty('--ry', `${(x * 6).toFixed(2)}deg`);
+      mindSys.style.setProperty('--rx', `${(-y * 5).toFixed(2)}deg`);
+    });
+    stage.addEventListener('pointerleave', () => {
+      mindSys.style.setProperty('--ry', '0deg');
+      mindSys.style.setProperty('--rx', '0deg');
+    });
+  }
+
+  /* ------------------------------------------------------------------ *
    * Copy email
    * ------------------------------------------------------------------ */
   const copyBtn = $('.copy-btn');
