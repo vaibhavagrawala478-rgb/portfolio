@@ -905,7 +905,7 @@
     const rName = $('#mr-name');
     const rLine = $('#mr-line');
     const rDots = $$('.mr-dots li', read);
-    const idle = { idx: '—', name: 'Nine minds.', line: 'Hover, focus or tap a model in orbit.' };
+    const idle = { idx: '—', name: '13 minds.', line: 'Hover, focus or tap a model in orbit.' };
     let pinned = -1;
 
     const swap = (el, text) => {
@@ -919,14 +919,15 @@
       const n = nodes[i];
       const c = getComputedStyle(n).getPropertyValue('--c').trim();
       nodes.forEach((m, k) => m.classList.toggle('is-active', k === i));
-      mindSys.dataset.active = String(i + 1);
+      const num = Number(n.dataset.i);
+      mindSys.dataset.active = String(num);
       mindSys.style.setProperty('--cc', c);
       read.style.setProperty('--c', c);
       read.removeAttribute('data-idle');
-      rIdx.textContent = String(i + 1).padStart(2, '0');
+      rIdx.textContent = String(num).padStart(2, '0');
       swap(rName, $('.m-name', n).textContent);
       swap(rLine, 'A model I’ve used or explored.');
-      rDots.forEach((d, k) => d.classList.toggle('is-on', k === i));
+      rDots.forEach((d, k) => d.classList.toggle('is-on', k === num - 1));
     };
     const clear = () => {
       nodes.forEach((m) => m.classList.remove('is-active'));
