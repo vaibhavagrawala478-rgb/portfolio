@@ -905,7 +905,7 @@
     const rName = $('#mr-name');
     const rLine = $('#mr-line');
     const rDots = $$('.mr-dots li', read);
-    const idle = { idx: '—', name: '13 minds.', line: 'Hover, focus or tap a model in orbit.' };
+    const idle = { idx: '—', name: '14 minds.', line: 'Hover, focus or tap a model in orbit.' };
     let pinned = -1;
 
     const swap = (el, text) => {
